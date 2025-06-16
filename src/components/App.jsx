@@ -2,7 +2,7 @@
 import { useState } from "react";
 import PostsApp from "./components/PostsApp";
 import TaskApp from "./components/TaskApp";
-import { ThemeProvider } from "../context/ThemeContext";
+import { ThemeProvider } from "./context/ThemeContext";
 
 function App() {
   const [view, setView] = useState("posts"); // "posts" or "tasks"

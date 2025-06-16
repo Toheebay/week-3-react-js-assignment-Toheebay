@@ -1,5 +1,6 @@
-// App.jsx
+// src/App.jsx
 import { useEffect, useState } from "react";
+import "./App.css"; // Optional custom styles
 
 const POSTS_URL = "https://jsonplaceholder.typicode.com/posts";
 
@@ -10,19 +11,20 @@ function App() {
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
+  const [count, setCount] = useState(0);
   const [darkMode, setDarkMode] = useState(() =>
     localStorage.getItem("theme") === "dark"
   );
 
-  const postsPerPage = 10;
+  const postsPerPage = 9;
 
-  // Theme Effect
+  // Theme toggle effect
   useEffect(() => {
     document.documentElement.classList.toggle("dark", darkMode);
     localStorage.setItem("theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
-  // Fetch posts
+  // Fetch posts from API
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -40,7 +42,7 @@ function App() {
     fetchData();
   }, []);
 
-  // Search filter
+  // Filter posts by search
   useEffect(() => {
     const filtered = posts.filter((post) =>
       post.title.toLowerCase().includes(search.toLowerCase())
@@ -49,7 +51,6 @@ function App() {
     setPage(1);
   }, [search, posts]);
 
-  // Paginate
   const paginatedPosts = displayedPosts.slice(
     (page - 1) * postsPerPage,
     page * postsPerPage
@@ -70,13 +71,33 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-5xl mx-auto p-4 space-y-6">
+      <main className="max-w-6xl mx-auto p-4 space-y-8">
+        {/* Counter */}
+        <section className="bg-white dark:bg-gray-800 p-4 rounded shadow">
+          <h2 className="text-lg font-semibold mb-2">🔢 Counter</h2>
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setCount((c) => c - 1)}
+              className="px-4 py-2 bg-red-500 text-white rounded"
+            >
+              -
+            </button>
+            <span className="text-xl font-bold">{count}</span>
+            <button
+              onClick={() => setCount((c) => c + 1)}
+              className="px-4 py-2 bg-green-500 text-white rounded"
+            >
+              +
+            </button>
+          </div>
+        </section>
+
         {/* Search */}
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          placeholder="🔍 Search by title..."
+          placeholder="🔍 Search posts by title..."
           className="w-full p-2 border border-gray-300 dark:border-gray-700 rounded"
         />
 
@@ -84,23 +105,23 @@ function App() {
         {loading && <p className="text-center animate-pulse">⏳ Loading...</p>}
         {error && <p className="text-center text-red-500">{error}</p>}
 
-        {/* Posts */}
+        {/* Posts List */}
         {!loading && !error && (
           <>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {paginatedPosts.map((post) => (
                 <div
                   key={post.id}
-                  className="p-4 rounded shadow-md bg-gray-100 dark:bg-gray-800 transform transition hover:scale-105 duration-300"
+                  className="p-4 bg-gray-100 dark:bg-gray-800 rounded shadow hover:scale-105 transition-transform duration-200"
                 >
-                  <h2 className="font-semibold text-lg mb-2">{post.title}</h2>
-                  <p className="text-sm opacity-80">{post.body}</p>
+                  <h3 className="font-semibold text-lg mb-1">{post.title}</h3>
+                  <p className="text-sm">{post.body}</p>
                 </div>
               ))}
             </div>
 
             {/* Pagination */}
-            <div className="flex justify-center items-center gap-3 mt-6">
+            <div className="flex justify-center items-center gap-4 mt-6">
               <button
                 onClick={() => setPage((p) => Math.max(p - 1, 1))}
                 disabled={page === 1}
@@ -108,7 +129,7 @@ function App() {
               >
                 ⬅ Prev
               </button>
-              <span className="font-medium">
+              <span>
                 Page {page} of {totalPages}
               </span>
               <button
@@ -123,8 +144,9 @@ function App() {
         )}
       </main>
 
+      {/* Footer */}
       <footer className="text-center text-sm mt-10 pb-4 opacity-60">
-        © 2025 | Built by Toheeb with 💻 React + Tailwind CSS
+        © {new Date().getFullYear()} | Built by  Adebayo Toheeb with 💻 React + Tailwind CSS
       </footer>
     </div>
   );
