@@ -8,8 +8,9 @@ This project is a **React + Tailwind CSS** application that fetches and displays
 - ⚛️ Smooth UI using Tailwind CSS
 
 ## 🚀 Live Demo
-
+       for Application that fetches and displays post from jsonplaceholder API
 👉 [Click to view the live project](https://my-reac.netlify.app/)
+ THIS FOR TASKMANAGER===>  https://taskmaniger.netlify.app/
 
 ## Project Structure
 
